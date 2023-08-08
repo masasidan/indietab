@@ -10,11 +10,17 @@ export const metadata: Metadata = {
   description: "Software Engineer and Indie Hacker ⚡️",
 };
 
-const User = () => {
+interface IUser {
+  params: {
+    username: string;
+  };
+}
+
+const User = ({ params: { username } }: IUser) => {
   return (
     <main className="w-screen h-[100svh]">
       <div className="px-5 overflow-auto w-full h-full flex flex-col items-center justify-center">
-        <UserCard />
+        <UserCard username={username} />
         <div className="mt-24 mb-5 hidden lg:block">
           <p className="text-gray-500 text-sm">
             Want an indie card of your own?{" "}

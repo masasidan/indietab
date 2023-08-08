@@ -7,9 +7,12 @@ import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 import { BsArrowRightShort } from "react-icons/bs";
 import UserProject from "./UserProject";
 
-const UserCard: React.FC = () => {
+interface IUserCard {
+  username: string;
+}
+
+const UserCard: React.FC<IUserCard> = ({ username }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const active = true;
 
   let isCardHovered = false;
 
@@ -63,7 +66,10 @@ const UserCard: React.FC = () => {
       ref={cardRef}
       className="my-5 flex flex-col border border-gray-500 shadow-md rounded-xl overflow-auto max-w-[400px] mx-auto w-full relative"
     >
-      <section className="p-14 relative bg-red-500/20"></section>
+      <section
+        data-username={`@${username} `.repeat(20)}
+        className="p-14 relative bg-red-500/20 skew-bg"
+      ></section>
       <section className="bg-[#121212] p-5 flex flex-col items-center text-center justify-center">
         <div className="relative -top-16 mb-[-3.5rem]">
           <img
@@ -74,6 +80,7 @@ const UserCard: React.FC = () => {
         </div>
         <div className="space-y-1">
           <h1 className="text-2xl font-semibold text-white">Idan Masas</h1>
+
           <h2 className="text-gray-500 text-lg max-w-[200px]">
             Software Engineer and Indie Hacker ⚡️
           </h2>
