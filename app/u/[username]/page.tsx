@@ -1,11 +1,13 @@
 // It's all hard-coded for now
 
 import UserCard from "@/components/user/UserCard";
+import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Idan Masas - IndieCard",
+  description: "Software Engineer and Indie Hacker ⚡️",
 };
 
 const User = () => {
