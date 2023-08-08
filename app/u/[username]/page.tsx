@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Idan Masas - IndieCard",
+  title: "Idan Masas - IndieTab",
   description: "Software Engineer and Indie Hacker ⚡️",
 };
 
