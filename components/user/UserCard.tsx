@@ -9,9 +9,33 @@ import UserProject from "./UserProject";
 
 interface IUserCard {
   username: string;
+  pfp: string;
+  fullName: string;
+  bio: string;
+  socials: {
+    name: string;
+    url: string;
+  }[];
+  projects: {
+    name: string;
+    description: string;
+    url: string;
+    active: boolean;
+  }[];
+  countryName: string;
+  countryCode: string;
 }
 
-const UserCard: React.FC<IUserCard> = ({ username }) => {
+const UserCard: React.FC<IUserCard> = ({
+  username,
+  pfp,
+  fullName,
+  bio,
+  socials,
+  projects,
+  countryName,
+  countryCode,
+}) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const projectsContainerRef: any = useRef<HTMLDivElement>(null);
   const rightArrowButtonRef: any = useRef<HTMLButtonElement>(null);
@@ -150,56 +174,69 @@ const UserCard: React.FC<IUserCard> = ({ username }) => {
           <img
             className="w-32 h-32 rounded-full border-8 border-[#121212] pointer-events-none select-none"
             alt="pfp"
-            src="https://pbs.twimg.com/profile_images/1686355879937896448/BIjP9i_g_400x400.jpg"
+            src={pfp}
           />
         </div>
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold text-white">Idan Masas</h1>
+          <h1 className="text-2xl font-semibold text-white">{fullName}</h1>
 
-          <h2 className="text-gray-500 text-lg max-w-[200px]">
-            Software Engineer and Indie Hacker ⚡️
-          </h2>
+          <h2 className="text-gray-500 text-lg max-w-[200px]">{bio}</h2>
         </div>
         <div className="my-4 flex flex-row items-center gap-3">
-          <Link
-            className="transition-colors duration-150 text-gray-500 hover:text-sky-500"
-            target="_blank"
-            href="https://twitter.com/intent/follow?screen_name=idanmasas"
-          >
-            <svg
-              viewBox="0 0 300 300"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              className="transition-colors duration-150 w-4 h-4 fill-gray-500 hover:fill-white"
-            >
-              <path d="M178.57 127.15 290.27 0h-26.46l-97.03 110.38L89.34 0H0l117.13 166.93L0 300.25h26.46l102.4-116.59 81.8 116.59h89.34M36.01 19.54H76.66l187.13 262.13h-40.66" />
-            </svg>
-          </Link>
-          <Link
-            className="transition-colors duration-150 text-gray-500 hover:text-red-500"
-            target="_blank"
-            href="https://www.instagram.com/idanmasas/"
-          >
-            <FaInstagram className="w-5 h-5" />
-          </Link>
-          <Link
-            className="transition-colors duration-150 text-gray-500 hover:text-violet-500"
-            target="_blank"
-            href="https://github.com/masasidan"
-          >
-            <FaGithub className="w-5 h-5" />
-          </Link>
-          <Link
-            className="transition-colors duration-150 text-gray-500 hover:text-blue-500"
-            target="_blank"
-            href="https://www.linkedin.com/in/idanmasas/"
-          >
-            <FaLinkedin className="w-5 h-5" />
-          </Link>
+          {socials.map((social) => {
+            switch (social.name) {
+              case "x":
+                return (
+                  <Link
+                    className="transition-colors duration-150 text-gray-500 hover:text-sky-500"
+                    target="_blank"
+                    href={social.url}
+                  >
+                    <svg
+                      viewBox="0 0 300 300"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="transition-colors duration-150 w-4 h-4 fill-gray-500 hover:fill-white"
+                    >
+                      <path d="M178.57 127.15 290.27 0h-26.46l-97.03 110.38L89.34 0H0l117.13 166.93L0 300.25h26.46l102.4-116.59 81.8 116.59h89.34M36.01 19.54H76.66l187.13 262.13h-40.66" />
+                    </svg>
+                  </Link>
+                );
+              case "instagram":
+                return (
+                  <Link
+                    className="transition-colors duration-150 text-gray-500 hover:text-red-500"
+                    target="_blank"
+                    href={social.url}
+                  >
+                    <FaInstagram className="w-5 h-5" />
+                  </Link>
+                );
+              case "github":
+                return (
+                  <Link
+                    className="transition-colors duration-150 text-gray-500 hover:text-violet-500"
+                    target="_blank"
+                    href={social.url}
+                  >
+                    <FaGithub className="w-5 h-5" />
+                  </Link>
+                );
+              case "linkedin":
+                return (
+                  <Link
+                    className="transition-colors duration-150 text-gray-500 hover:text-blue-500"
+                    target="_blank"
+                    href={social.url}
+                  >
+                    <FaLinkedin className="w-5 h-5" />
+                  </Link>
+                );
+            }
+          })}
         </div>
 
-        <h3 className="text-gray-500 text-lg my-3">Projects</h3>
-        <div className="flex flex-row gap-4 w-full mb-3">
+        <div className="flex flex-row gap-4 w-full mt-6 mb-3">
           <button
             ref={leftArrowButtonRef}
             style={{
@@ -215,12 +252,19 @@ const UserCard: React.FC<IUserCard> = ({ username }) => {
 
           <div
             ref={projectsContainerRef}
-            className="flex flex-row items-center gap-2 overflow-auto scrollbar-hide"
+            className="flex flex-row gap-2 overflow-auto scrollbar-hide"
             style={{ scrollBehavior: "smooth" }}
           >
-            <UserProject />
-            <UserProject />
-            <UserProject />
+            {projects.map((project) => {
+              return (
+                <UserProject
+                  name={project.name}
+                  description={project.description}
+                  url={project.url}
+                  active={project.active}
+                />
+              );
+            })}
           </div>
 
           <button
@@ -237,8 +281,12 @@ const UserCard: React.FC<IUserCard> = ({ username }) => {
           <p className="text-gray-500 text-sm">
             Idan is indie hacking all the way from{" "}
             <span className="ml-1">
-              <ReactCountryFlag countryCode="IL" svg className="text-lg" />{" "}
-              Israel
+              <ReactCountryFlag
+                countryCode={countryCode}
+                svg
+                className="text-lg"
+              />{" "}
+              {countryName}
             </span>
           </p>
         </div>
