@@ -188,6 +188,7 @@ const UserCard: React.FC<IUserCard> = ({
               case "x":
                 return (
                   <Link
+                    key={social.name}
                     className="transition-colors duration-150 text-gray-500 hover:text-sky-500"
                     target="_blank"
                     href={social.url}
@@ -205,6 +206,7 @@ const UserCard: React.FC<IUserCard> = ({
               case "instagram":
                 return (
                   <Link
+                    key={social.name}
                     className="transition-colors duration-150 text-gray-500 hover:text-red-500"
                     target="_blank"
                     href={social.url}
@@ -215,6 +217,7 @@ const UserCard: React.FC<IUserCard> = ({
               case "github":
                 return (
                   <Link
+                    key={social.name}
                     className="transition-colors duration-150 text-gray-500 hover:text-violet-500"
                     target="_blank"
                     href={social.url}
@@ -225,6 +228,7 @@ const UserCard: React.FC<IUserCard> = ({
               case "linkedin":
                 return (
                   <Link
+                    key={social.name}
                     className="transition-colors duration-150 text-gray-500 hover:text-blue-500"
                     target="_blank"
                     href={social.url}
@@ -258,6 +262,7 @@ const UserCard: React.FC<IUserCard> = ({
             {projects.map((project) => {
               return (
                 <UserProject
+                  key={project.name}
                   name={project.name}
                   description={project.description}
                   url={project.url}
