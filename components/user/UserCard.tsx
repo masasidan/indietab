@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 import Link from "next/link";
 import ReactCountryFlag from "react-country-flag";
 import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
-import { BsArrowRightShort } from "react-icons/bs";
+import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
 import UserProject from "./UserProject";
 
 interface IUserCard {
@@ -13,6 +13,9 @@ interface IUserCard {
 
 const UserCard: React.FC<IUserCard> = ({ username }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const projectsContainerRef: any = useRef<HTMLDivElement>(null);
+  const rightArrowButtonRef: any = useRef<HTMLButtonElement>(null);
+  const leftArrowButtonRef: any = useRef<HTMLButtonElement>(null);
 
   let isCardHovered = false;
 
@@ -60,6 +63,78 @@ const UserCard: React.FC<IUserCard> = ({ username }) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const projectsContainer = projectsContainerRef.current;
+    if (projectsContainer) {
+      projectsContainer.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (projectsContainer) {
+        projectsContainer.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
+  const handleScroll = () => {
+    if (
+      projectsContainerRef.current &&
+      rightArrowButtonRef.current &&
+      leftArrowButtonRef.current
+    ) {
+      const projectsContainer = projectsContainerRef.current;
+      if (
+        projectsContainer.scrollWidth - projectsContainer.scrollLeft >
+        projectsContainer.clientWidth
+      ) {
+        rightArrowButtonRef.current.style.opacity = "1";
+        rightArrowButtonRef.current.style.visibility = "visible";
+      } else {
+        rightArrowButtonRef.current.style.opacity = "0";
+        rightArrowButtonRef.current.style.visibility = "hidden";
+      }
+
+      if (projectsContainer.scrollLeft > 0) {
+        leftArrowButtonRef.current.style.opacity = "1";
+        leftArrowButtonRef.current.style.visibility = "visible";
+      } else {
+        leftArrowButtonRef.current.style.opacity = "0";
+        leftArrowButtonRef.current.style.visibility = "hidden";
+      }
+    }
+  };
+
+  const scrollProjects = (direction: "left" | "right") => {
+    if (projectsContainerRef.current) {
+      const scrollAmount = 200;
+      const currentScroll = projectsContainerRef.current.scrollLeft;
+      let newScroll: any;
+
+      if (direction === "right") {
+        newScroll = currentScroll + scrollAmount;
+      } else {
+        newScroll = currentScroll - scrollAmount;
+      }
+
+      const startTime = performance.now();
+      const duration = 300; // duration of the animation in milliseconds
+
+      const animateScroll = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        projectsContainerRef.current!.scrollLeft =
+          currentScroll + progress * (newScroll - currentScroll);
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
+    }
+  };
 
   return (
     <div
@@ -124,11 +199,37 @@ const UserCard: React.FC<IUserCard> = ({ username }) => {
         </div>
 
         <h3 className="text-gray-500 text-lg my-3">Projects</h3>
-        <div className="flex flex-row gap-2 w-full mb-3 overflow-auto">
-          <UserProject />
-          <button className="my-auto flex flex-row items-center gap-1 transition-colors duration-150 text-gray-500 hover:text-gray-400">
+        <div className="flex flex-row gap-4 w-full mb-3">
+          <button
+            ref={leftArrowButtonRef}
+            style={{
+              opacity: "0",
+              visibility: "hidden",
+              transition: "opacity 0.3s",
+            }}
+            onClick={() => scrollProjects("left")}
+            className="flex-1 border border-gray-500 rounded-full my-auto flex flex-row items-center gap-1 transition-colors duration-150 text-gray-500 hover:text-gray-400 hover:border-gray-400"
+          >
+            <BsArrowLeftShort className="w-5 h-5" />
+          </button>
+
+          <div
+            ref={projectsContainerRef}
+            className="flex flex-row items-center gap-2 overflow-auto scrollbar-hide"
+            style={{ scrollBehavior: "smooth" }}
+          >
+            <UserProject />
+            <UserProject />
+            <UserProject />
+          </div>
+
+          <button
+            ref={rightArrowButtonRef}
+            style={{ opacity: "1", transition: "opacity 0.3s" }}
+            onClick={() => scrollProjects("right")}
+            className="flex-1 border border-gray-500 rounded-full my-auto flex flex-row items-center gap-1 transition-colors duration-150 text-gray-500 hover:text-gray-400 hover:border-gray-400"
+          >
             <BsArrowRightShort className="w-5 h-5" />
-            <p className="flex-1 text-sm">See more</p>
           </button>
         </div>
 

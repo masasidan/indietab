@@ -6,7 +6,7 @@ const UserProject: React.FC = () => {
   const active = true;
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-2 border border-gray-500 p-3 rounded-xl">
+    <div className="min-w-[200px] flex-1 w-full flex flex-col gap-2 border border-gray-500 p-3 rounded-xl">
       <div className="flex flex-row items-center gap-2">
         <h4 className="font-medium text-gray-400">VoteSnag</h4>
         <div
