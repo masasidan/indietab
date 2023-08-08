@@ -6,6 +6,9 @@ import React from "react";
 export const metadata: Metadata = {
   title: "Idan Masas - IndieTab",
   description: "Software Engineer and Indie Hacker ⚡️",
+  openGraph: {
+    images: ["/static/idan.jpg"],
+  },
 };
 
 interface IUser {
@@ -20,7 +23,7 @@ const User = ({ params: { username } }: IUser) => {
       <div className="px-5 overflow-auto w-full h-full flex flex-col items-center justify-center">
         <UserCard
           username={username}
-          pfp="https://pbs.twimg.com/profile_images/1686355879937896448/BIjP9i_g_400x400.jpg"
+          pfp="/static/idan.jpg"
           fullName="Idan Masas"
           bio="Software Engineer and Indie Hacker ⚡️"
           countryName="Israel"
